@@ -37,11 +37,6 @@ fs.writeFileSync(
   JSON.stringify(exactMap, null, 2)
 );
 
-fs.writeFileSync(
-  'wildcard-map.json',
-  JSON.stringify(wildcardMap, null, 2)
-);
-
 console.log(
   `Exact: ${Object.keys(exactMap).length}, Wildcards: ${Object.keys(wildcardMap).length}`
 );

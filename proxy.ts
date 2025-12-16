@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
 import exactMap from './redirect-map.json';
-import wildcardMap from './wildcard-map.json';
 
 function normalizePath(pathname: string) {
   return pathname.replace(/\/$/, '');
@@ -48,25 +47,6 @@ export function proxy(req: NextRequest) {
           new URL(htmlMatch, url.origin),
           301
         );
-      }
-    }
-  }
-
-  /* 3️⃣ Wildcard match */
-  for (const base in wildcardMap as Record<string, string>) {
-    if (pathname.startsWith(base)) {
-      const destination =
-        (wildcardMap as Record<string, string>)[base];
-
-      if (destination && destination !== pathname) {
-        const normalizedDestination = normalizePath(destination);
-        // Prevent redirect loops
-        if (normalizedDestination !== pathname) {
-          return NextResponse.redirect(
-            new URL(destination, url.origin),
-            301
-          );
-        }
       }
     }
   }
