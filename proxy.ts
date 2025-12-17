@@ -5,7 +5,7 @@ function normalizePath(pathname: string) {
   return pathname.replace(/\/$/, '');
 }
 
-export function proxy(req: NextRequest) {
+export default function proxy(req: NextRequest) {
   const url = req.nextUrl;
   const pathname = normalizePath(url.pathname);
 
