@@ -25,9 +25,12 @@ export function proxy(req: NextRequest) {
   if (exact && exact !== pathname) {
     const normalizedExact = normalizePath(exact);
     // Double-check to prevent identical redirects
+    console.log('Redirecting:', url);
     if (normalizedExact !== pathname) {
+      // Check if the redirect URL is absolute (contains domain) or relative
+      const redirectUrl = exact.startsWith('http') ? exact : `https://${exact}`;
       return NextResponse.redirect(
-        new URL(exact, url.origin),
+        redirectUrl,
         301
       );
     }
@@ -43,8 +46,10 @@ export function proxy(req: NextRequest) {
       const normalizedHtmlMatch = normalizePath(htmlMatch);
       // Prevent redirect loops
       if (normalizedHtmlMatch !== pathname && normalizedHtmlMatch !== stripped) {
+        // Check if the redirect URL is absolute (contains domain) or relative
+        const redirectUrl = htmlMatch.startsWith('http') ? htmlMatch : `https://${htmlMatch}`;
         return NextResponse.redirect(
-          new URL(htmlMatch, url.origin),
+          redirectUrl,
           301
         );
       }
